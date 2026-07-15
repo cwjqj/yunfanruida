@@ -21,12 +21,13 @@
 
 | 模块 | 当前版本 | 部署入口 | 固定版本副本 | SHA256 | 状态 |
 |---|---|---|---|---|---|
-| 人数统计 | `Radar_Top_Count_1.3` | `顶装/脚本/lua/radar_iot_task.lua` | `versions/count/radar_iot_task_v1.3.lua` | `3342022D...DE1E9D5` | 稳定基线，不再覆盖 |
-| 扩展轨迹 | `Radar_Top_Track_2.0` | `顶装/脚本/lua/radar_iot_task_track.lua` | `versions/track/radar_iot_task_track_v2.0.lua` | `89EAFA61...BBCDB2` | 三人轨迹实验版 |
-| 姿态识别 | `Radar_Top_Posture_3.1` | `顶装/脚本/lua/radar_iot_task_posture.lua` | `versions/posture/radar_iot_task_posture_v3.1.lua` | `ECBD9FAA...446CFE4` | 当前最新实验版 |
-| 姿态回退 | `Radar_Top_Posture_3.0` | 不作为当前入口 | `versions/posture/radar_iot_task_posture_v3.0.lua` | `48E74198...E27DCAB` | 无床桌区的回退版 |
+| 人数统计 | `Radar_Top_Count_1.3` | `顶装/脚本/lua/radar_iot_task.lua` | `顶装/脚本/lua/versions/count/radar_iot_task_v1.3.lua` | `3342022D...DE1E9D5` | 稳定基线，不再覆盖 |
+| 门区退出 | `Radar_Top_Door_Exit_1.0` | `顶装/脚本/lua/radar_iot_task_door_exit.lua` | `顶装/脚本/lua/versions/door_exit/radar_iot_task_door_exit_v1.0.lua` | `8154F612...50C937` | 独立实验版，门区待真机标定 |
+| 扩展轨迹 | `Radar_Top_Track_2.0` | `顶装/脚本/lua/radar_iot_task_track.lua` | `顶装/脚本/lua/versions/track/radar_iot_task_track_v2.0.lua` | `89EAFA61...BBCDB2` | 三人轨迹实验版 |
+| 姿态识别 | `Radar_Top_Posture_3.1` | `顶装/脚本/lua/radar_iot_task_posture.lua` | `顶装/脚本/lua/versions/posture/radar_iot_task_posture_v3.1.lua` | `ECBD9FAA...446CFE4` | 当前最新实验版 |
+| 姿态回退 | `Radar_Top_Posture_3.0` | 不作为当前入口 | `顶装/脚本/lua/versions/posture/radar_iot_task_posture_v3.0.lua` | `48E74198...E27DCAB` | 无床桌区的回退版 |
 
-版本约定：每次功能更新必须修改脚本 `pver`，并保留带版本号的固定副本、说明文档和测试记录。禁止直接覆盖 `Count 1.3`、`Track 2.0`、`Posture 3.0`、`Posture 3.1` 固定版本文件。
+版本约定：`lua/` 根目录只保留各模块当前入口；固定版本副本按模块存放在 `lua/versions/<module>/`，离线测试存放在 `lua/tests/<module>/`。每次功能更新必须修改脚本 `pver`，并保留带版本号的固定副本、说明文档和测试记录。禁止直接覆盖已发布的固定版本文件。
 
 ## 3. 雷达协议与数据来源
 
@@ -196,14 +197,15 @@
 
 ## 12. 回退方案
 
-- 人数异常：部署 `versions/count/radar_iot_task_v1.3.lua`。
-- 轨迹扩展异常：部署 `versions/track/radar_iot_task_track_v2.0.lua`。
-- Posture 3.1 区域逻辑异常：部署 `versions/posture/radar_iot_task_posture_v3.0.lua`。
+- 人数异常：部署 `顶装/脚本/lua/versions/count/radar_iot_task_v1.3.lua`。
+- 轨迹扩展异常：部署 `顶装/脚本/lua/versions/track/radar_iot_task_track_v2.0.lua`。
+- Posture 3.1 区域逻辑异常：部署 `顶装/脚本/lua/versions/posture/radar_iot_task_posture_v3.0.lua`。
 - 每次回退后确认 `pver`、`radar_frame_count`、`people_count` 和 MQTT 上报恢复正常。
 
 ## 13. 相关文档
 
 - `项目手册.md`
+- `顶装/文档/顶装Lua脚本功能模块梳理.md`
 - `顶装/文档/顶装参数设置与验证.md`
 - `顶装/文档/顶装扩展轨迹跟踪说明_v2.0.md`
 - `顶装/文档/顶装姿态识别说明_v3.0.md`
@@ -214,10 +216,9 @@
 
 ## 14. 交接确认清单
 
-- [ ] 已确认三个部署入口和四个固定版本副本。
+- [ ] 已确认四个独立部署入口和六个固定版本副本。
 - [ ] 已确认云端新增轨迹、姿态和区域数据点。
 - [ ] 已确认现场安装高度、房间坐标和床面高度。
 - [ ] 已保存统一测试的人工真值、MQTT JSON 和 UART HEX。
 - [ ] 已完成三人轨迹连续性和姿态准确率统计。
 - [ ] 已记录部署版本、脚本 SHA256 和回退版本。
-
